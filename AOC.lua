@@ -32,107 +32,6 @@ function AOC.print_input(input, config)
   io.write("\n")
 end
 
--- UTIL Functions
-
-function AOC.size(t)
-  local count = 0
-  for _, _ in pairs(t) do
-    count = count + 1
-  end
-  return count
-end
-
-function AOC.string_intersection(str_a, str_b)
-  local result = ""
-  for i = 1, #str_a do
-    if str_a:sub(i, i) == str_b:sub(i, i) then
-      result = result .. str_a:sub(i, i)
-    end
-  end
-  return result
-end
-
-function AOC.map(t, fn)
-  local result = {}
-  for _, v in pairs(t) do
-    table.insert(result, fn(v))
-  end
-  return result
-end
-
-function AOC.filter(t, fn)
-  local result = {}
-  for _, v in pairs(t) do
-    if fn(v) then table.insert(result, v) end
-  end
-  return result
-end
-
-function AOC.at(str, i)
-  return str:sub(i, i)
-end
-
-function AOC.reduce(t, fn, initalValue)
-  if initalValue == nil then
-    if type(t[1]) == "number" then
-      initalValue = 0
-    elseif type(t[1]) == "string" then
-      initalValue = ""
-    else
-      initalValue = {}
-    end
-  end
-
-  for _, v in pairs(t) do
-    initalValue = fn(initalValue, v)
-  end
-  return initalValue
-end
-
-local acc = {}
-AOC.acc = acc
-function acc.sum(accumulator, current)
-  return accumulator + current
-end
-
-local sort = {}
-AOC.sort = sort
-function sort.by_year(date1, date2)
-  if date1.year == date2.year then
-    if date1.month == date2.month then
-      if date1.day == date2.day then
-        if date1.hour == date2.hour then
-          return date1.minute < date2.minute
-        end
-        return date1.hour < date2.hour
-      end
-      return date1.day < date2.day
-    end
-    return date1.month < date2.month
-  end
-  return date1.year < date2.year
-end
-
-function AOC.split(str, char)
-  if char == "" then return AOC.split_each_char(str) end
-  local result = {}
-  for v in str:gmatch("[^" .. char .. "]+") do
-    table.insert(result, v)
-  end
-  return result
-end
-
-function AOC.split_each_char(str)
-  local result = {}
-  for i = 1, #str do
-    table.insert(result, str:sub(i, i))
-  end
-  return result
-end
-
-function AOC.print_t(t)
-  for i, v in pairs(t) do print(i, v) end
-end
 
 -- CLI Commands
 
@@ -173,8 +72,15 @@ function AOC.run_day(day_number, config)
     AOC.print_input(data)
   end
   local day = require(day_number .. "/solution")
-  print("part1: ", day:part1(data))
-  print("part2: ", day:part2(data))
+  local day1_start = os.clock()
+  local day1_result = day:part1(data)
+  local day1_end = os.clock()
+  print("part1:", day1_result, "time:", day1_end - day1_start .. "s")
+
+  local day2_start = os.clock()
+  local day2_result = day:part2(data)
+  local day2_end = os.clock()
+  print("part2: ", day2_result, "time:", day2_end - day2_start .. "s")
 end
 
 function AOC.run_test(day_number, config)
@@ -182,4 +88,5 @@ function AOC.run_test(day_number, config)
 end
 
 AOC.parse_arg()
+
 return AOC
