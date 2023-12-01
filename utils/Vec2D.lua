@@ -31,7 +31,7 @@ function Vec2D:to_string()
 end
 
 function Vec2D:neighbours(diagonals)
-  local diagonals = false or diagonals
+  diagonals = diagonals or false
   local neighbours = { self:left(), self:right(), self:up(), self:down() }
   if diagonals then
     table.insert(self:left_up(),neighbours)

@@ -1,23 +1,24 @@
-local H = {}
+local FList = require("utils.FList")
+local Q = {}
 
 local metatable = {
   __call = function(self)
-    return H.new()
+    return Q.new()
   end,
-  __index = H
+  __index = Q
 }
 
-function H.new()
-  return setmetatable({heap = {}},metatable)
+function Q.new()
+  return setmetatable({heap = FList({})},metatable)
 end
 
-setmetatable(H, metatable)
+setmetatable(Q, metatable)
 
-function H:top()
+function Q:top()
   return self.heap[1]
 end
 
-function H:push(value, priority)
+function Q:push(value, priority)
   if type(priority) == "function" then
     priority = priority(value)
   end
@@ -25,7 +26,7 @@ function H:push(value, priority)
   self:upheap()
 end
 
-function H:pop()
+function Q:pop()
   local heap = self.heap
   if #heap == 0 then return nil end
   if #heap == 1 then return table.remove(heap) end
@@ -36,7 +37,7 @@ function H:pop()
   return top
 end
 
-function H:upheap()
+function Q:upheap()
   local heap = self.heap
   local child = #heap
   while child > 1 do
@@ -50,7 +51,7 @@ function H:upheap()
   end
 end
 
-function H:downheap()
+function Q:downheap()
   local heap = self.heap
   local parent = 1
   local heapSize = #heap
@@ -71,29 +72,21 @@ function H:downheap()
   end
 end
 
-function H:print()
-  for key, value in pairs(self.heap) do
+function Q:print()
+  for _, value in pairs(self.heap) do
     print(value.value,value.priority)
   end
 end
 
-function H.from_keys(list, priority_fn)
-  local heap = H()
+function Q.from_keys(list, priority_fn)
+  local heap = Q()
   for key, _ in pairs(list) do
     heap:push(key,priority_fn)
   end
   return heap
 end
 
--- function H.from_values(list)
---   local heap = H()
---   for _, value in pairs(list) do
---     heap:push(value)
---   end
---   return heap
--- end
-
-function H:size()
+function Q:size()
   local result = 0
   for _, _ in pairs(self.heap) do
     result = result + 1
@@ -102,9 +95,9 @@ function H:size()
 end
 
 local priority = {}
-H.priority = priority
+Q.priority = priority
 function priority.char_value(char)
   return char:byte() - 96
 end
 
-return H
+return Q

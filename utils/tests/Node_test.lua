@@ -1,0 +1,33 @@
+local Node = require("utils.Node")
+
+describe("Node", function ()
+  it("should error when not givin a value to Node",function ()
+    local node, err = Node()
+    assert.are.equal(node, nil)
+    assert.are.equal(err, "Node value cannot be nil")
+  end)
+  it("should create Node given a value, no other relations set",function ()
+    local node = Node(42)
+    assert.are.equal(42, node:get_value())
+    assert.are.equal(nil, node:get_left())
+    assert.are.equal(nil, node:get_right())
+    assert.are.equal(nil, node:get_parent())
+    assert.are.equal(nil, node:get_children())
+  end)
+  it("should be able to set relations", function ()
+    local node = Node(42)
+    node:set_right(Node(12))
+    assert.are.equal(12, node:get_right():get_value())
+
+    node:set_left(Node(24))
+    assert.are.equal(24, node:get_left():get_value())
+
+    node:set_parent(Node(84))
+    assert.are.equal(84, node:get_parent():get_value())
+    
+    node:add_child(Node(1))
+    node:add_child(Node(4))
+    assert.are.same(4, node:get_children()[2]:get_value())
+  end)
+  
+end)

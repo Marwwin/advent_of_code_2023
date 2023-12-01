@@ -79,7 +79,7 @@ function FList:ifor(fn)
   end
 end
 
-function FList:contains(val)
+function FList:has(val)
   for _, value in pairs(self) do
     if value == val then return true end
   end
