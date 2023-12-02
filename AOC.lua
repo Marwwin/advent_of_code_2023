@@ -32,7 +32,6 @@ function AOC.print_input(input, config)
   io.write("\n")
 end
 
-
 -- CLI Commands
 
 local args = { ... }
