@@ -1,7 +1,5 @@
-local AOC = require("AOC")
 local utils = require("utils.utils")
 local day = {}
-
 
 function day:part1(input_data)
   local MAX_CUBES = { red = 12, green = 13, blue = 14 }
@@ -10,9 +8,9 @@ function day:part1(input_data)
     local game = day.parse_game(str)
     local went_over = false
     for _, subset in ipairs(game.subsets) do
-      if (subset.red or 0) > MAX_CUBES.red or
-          (subset.green or 0) > MAX_CUBES.green or
-          (subset.blue or 0) > MAX_CUBES.blue then
+      if subset.red > MAX_CUBES.red or
+          subset.green > MAX_CUBES.green or
+          subset.blue > MAX_CUBES.blue then
         went_over = true
       end
     end
