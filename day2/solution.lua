@@ -9,7 +9,7 @@ function day:part1(input_data)
   for _, str in ipairs(input_data) do
     local game = day.parse_game(str)
     local went_over = false
-    for _, subset in ipairs(game.games) do
+    for _, subset in ipairs(game.subsets) do
       if (subset.red or 0) > MAX_CUBES.red or
           (subset.green or 0) > MAX_CUBES.green or
           (subset.blue or 0) > MAX_CUBES.blue then
@@ -26,13 +26,10 @@ function day:part2(input_data)
   for _, str in ipairs(input_data) do
     local game_result = { red = 0, blue = 0, green = 0 }
     local game = day.parse_game(str)
-    for _, subset in ipairs(game.games) do
-      local red = subset.red or 0
-      local green = subset.green or 0
-      local blue = subset.blue or 0
-      if red > game_result.red then game_result.red = red end
-      if green > game_result.green then game_result.green = green end
-      if blue > game_result.blue then game_result.blue = blue end
+    for _, subset in ipairs(game.subsets) do
+      if subset.red > game_result.red then game_result.red = subset.red end
+      if subset.green > game_result.green then game_result.green = subset.green end
+      if subset.blue > game_result.blue then game_result.blue = subset.blue end
     end
     result = result + (game_result.red * game_result.green * game_result.blue)
   end
@@ -41,18 +38,17 @@ end
 
 function day.parse_game(str)
   local result = {}
-  local first_split = utils.split(str, ":")
-  local game_id = utils.split(first_split[1])
-  result.id = tonumber(game_id[2])
-  result.games = {}
+  local id, subsets = str:match("Game (%d+): (.+)")
+  result.id = tonumber(id)
+  result.subsets = {}
 
-  for _, game in ipairs(utils.split(first_split[2], ";")) do
-    local current_game = {}
-    for _, cube in ipairs(utils.split(game, ",")) do
-      local n, color = cube:match("(%d+) (%a+)")
-      current_game[color] = tonumber(n)
+  for _, game in ipairs(utils.split(subsets, ";")) do
+    local subset = { red = 0, green = 0, blue = 0 }
+    for _, cubes in ipairs(utils.split(game, ",")) do
+      local n, color = cubes:match("(%d+) (%a+)")
+      subset[color] = tonumber(n)
     end
-    table.insert(result.games, current_game)
+    table.insert(result.subsets, subset)
   end
   return result
 end
