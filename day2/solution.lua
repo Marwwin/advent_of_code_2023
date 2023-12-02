@@ -11,10 +11,10 @@ function day:part1(input_data)
       if subset.red > MAX_CUBES.red or
           subset.green > MAX_CUBES.green or
           subset.blue > MAX_CUBES.blue then
-        went_over = true
+        result = result + game.id
+        break
       end
     end
-    if went_over == false then result = result + game.id end
   end
   return result
 end
