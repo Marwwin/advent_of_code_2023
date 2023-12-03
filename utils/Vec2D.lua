@@ -1,4 +1,5 @@
 local Vec2D = {}
+local FList = require("utils.FList")
 
 local metatable = {
   __call = function(self, x, y)
@@ -26,18 +27,25 @@ function Vec2D:equals(v)
   return false
 end
 
+function Vec2D:from_string(str)
+  local x, y = str:match("(%d+) (%d+)")
+  if x == nil or y == nil then return nil, str.." invalid x or y was nil" end
+
+  return Vec2D(x,y)
+end
+
 function Vec2D:to_string()
   return tostring(self.x) .. " " .. tostring(self.y)
 end
 
 function Vec2D:neighbours(diagonals)
   diagonals = diagonals or false
-  local neighbours = { self:left(), self:right(), self:up(), self:down() }
+  local neighbours = FList{ self:left(), self:right(), self:up(), self:down() }
   if diagonals then
-    table.insert(self:left_up(),neighbours)
-    table.insert(self:right_up(),neighbours)
-    table.insert(self:right_down(),neighbours)
-    table.insert(self:left_down(),neighbours)
+    table.insert(neighbours,self:left_up())
+    table.insert(neighbours,self:right_up())
+    table.insert(neighbours,self:right_down())
+    table.insert(neighbours,self:left_down())
   end
   return neighbours
 end

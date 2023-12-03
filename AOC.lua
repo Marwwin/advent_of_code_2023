@@ -52,6 +52,7 @@ function AOC.parse_config()
   for _, arg in ipairs(args) do
     if arg == "--input" or arg == "-i" then config["show_input_data"] = true end
     if arg == "--test" or arg == "-t" then config["test_data"] = true end
+    if arg == "--benchmark" or arg == "-b" then config["benchmark"] = true end
   end
   return config
 end
@@ -72,10 +73,12 @@ function AOC.run_day(day_number, config)
   end
 
   local day = require(day_number .. "/solution")
-  local part1_result, part1_avg = AOC.perf(day.part1, day, data)
+  local times = 1
+  if config.benchmark then times = 1000 end
+  local part1_result, part1_avg = AOC.perf(day.part1, day, data,times)
   print("part1:", part1_result, "time:", part1_avg .. "ms")
 
-  local part2_result, part2_avg = AOC.perf(day.part2, day, data)
+  local part2_result, part2_avg = AOC.perf(day.part2, day, data,times)
   print("part2: ", part2_result, "time:", part2_avg .. "ms")
 end
 

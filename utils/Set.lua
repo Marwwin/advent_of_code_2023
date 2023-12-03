@@ -18,6 +18,15 @@ function Set:add(value)
   self[value] = true
 end
 
+function Set:pop()
+  for key, value in pairs(self) do
+    if self[key] == true then
+      self[key] = false
+      return key
+    end
+  end
+end
+
 function Set:remove(value)
   self[value] = nil
 end
@@ -43,6 +52,14 @@ function Set:print()
   for key, _ in pairs(self) do
     print(key)
   end
+end
+
+function Set:size()
+  local size = 0
+  for _, _ in pairs(self) do
+    size = size + 1
+  end
+  return size
 end
 
 return Set
