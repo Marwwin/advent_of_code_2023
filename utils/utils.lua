@@ -28,13 +28,23 @@ function M.chars(str)
   return result
 end
 
-function M.print_t(t)
+function M.print_t(t, depth)
+  depth = depth or 0
   for key, value in pairs(t) do
+    local offset = ""
+    for i = 1, depth, 1 do
+      if i == depth then
+        offset = offset .. " \u{2514}"
+      else
+        offset = offset .. "   "
+      end
+    end
     if type(value) == "table" then
-      print(key)
-      M.print_t(value)
+      io.write(offset .. key .. " {\n")
+      M.print_t(value, depth + 1)
+      io.write(offset:sub(1,#offset -3) .. " }\n")
     else
-      print(key, value)
+      io.write(offset .. key .. ": " .. value .. "\n")
     end
   end
 end
