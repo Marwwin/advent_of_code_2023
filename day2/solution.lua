@@ -6,11 +6,11 @@ function day:part1(input_data)
   local result = 0
   for _, str in ipairs(input_data) do
     local game = day.parse_game(str)
-    local went_over = false
     for _, subset in ipairs(game.subsets) do
       if subset.red > MAX_CUBES.red or
           subset.green > MAX_CUBES.green or
-          subset.blue > MAX_CUBES.blue then
+          subset.blue > MAX_CUBES.blue
+      then
         result = result + game.id
         break
       end

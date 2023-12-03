@@ -46,5 +46,4 @@ function Node:set_parent(node)
   self.parent = node
 end
 
-
 return Node

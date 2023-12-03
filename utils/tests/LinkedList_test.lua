@@ -1,0 +1,26 @@
+local LinkedList = require("utils.LinkedList")
+local Node = require("utils.Node")
+describe("LinkedList", function ()
+  it("should be able to create LinkedList and add values",function ()
+    local list = LinkedList()
+    assert.are.equal(nil,list:root())
+
+    list:add(42)
+    assert.are.same(Node(42),list:root())
+
+    list:add(21)
+    assert.are.equal(2, list:size())
+
+    assert.are.equal(true, list:contains(21))
+    assert.are.equal(false, list:contains(69))
+  end)
+  it("should be able to remove",function ()
+    local list = LinkedList()
+    list:add(42)
+    list:add(21)
+
+    local popped = list:pop()
+    assert.are.same(Node(42), popped)
+    assert.are.same(Node(21), list:root())
+  end)
+end)

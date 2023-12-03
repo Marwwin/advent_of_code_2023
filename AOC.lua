@@ -40,7 +40,7 @@ function AOC.parse_arg()
   local config = AOC.parse_config()
 
   for i, arg in ipairs(args) do
-    print(arg)
+--     print(arg)
     if arg == "run" then AOC.run_day(args[i + 1], config) end
     if arg == "test" then AOC.run_test(args[i + 1], config) end
     if arg == "create" then AOC.create(args[i + 1], config) end
@@ -70,19 +70,28 @@ function AOC.run_day(day_number, config)
   if config.show_input_data then
     AOC.print_input(data)
   end
-  local day = require(day_number .. "/solution")
-  local day1_start = os.clock()
-  local day1_result = day:part1(data)
-  local day1_end = os.clock()
-  print("part1:", day1_result, "time:", day1_end - day1_start .. "s")
 
-  local day2_start = os.clock()
-  local day2_result = day:part2(data)
-  local day2_end = os.clock()
-  print("part2: ", day2_result, "time:", day2_end - day2_start .. "s")
+  local day = require(day_number .. "/solution")
+  local part1_result, part1_avg = AOC.perf(day.part1, day, data)
+  print("part1:", part1_result, "time:", part1_avg .. "ms")
+
+  local part2_result, part2_avg = AOC.perf(day.part2, day, data)
+  print("part2: ", part2_result, "time:", part2_avg .. "ms")
 end
 
-function AOC.run_test(day_number, config)
+function AOC.perf(fn, day, data, times)
+  times = times or 1000
+  local result = 0
+  local output
+  for _ = 1, times, 1 do
+    local start = os.clock()
+    output = fn(day, data)
+    result = result + (os.clock() - start)
+  end
+  return output, (result / times) * 1000
+end
+
+function AOC.run_test(day_number)
   os.execute("busted " .. day_number .. "/test.lua")
 end
 
