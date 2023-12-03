@@ -73,6 +73,10 @@ function FList:set()
   return FList(set)
 end
 
+function FList:add(v)
+  table.insert(self,v)
+end
+
 function FList:ifor(fn)
   for index, value in ipairs(self) do
     self[index] = fn(value)

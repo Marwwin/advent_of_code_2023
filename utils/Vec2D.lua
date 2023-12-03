@@ -38,8 +38,8 @@ function Vec2D:to_string()
   return tostring(self.x) .. " " .. tostring(self.y)
 end
 
-function Vec2D:neighbours(diagonals)
-  diagonals = diagonals or false
+function Vec2D:neighbours(t)
+  local diagonals = t.diagonals or false
   local neighbours = FList{ self:left(), self:right(), self:up(), self:down() }
   if diagonals then
     table.insert(neighbours,self:left_up())
