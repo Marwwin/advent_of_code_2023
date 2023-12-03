@@ -1,4 +1,3 @@
-local AOC = require("AOC")
 local day = {}
 local Vec2D = require("utils.Vec2D")
 local FList = require("utils.FList")
@@ -51,7 +50,7 @@ function day.get_parts(symbol, coord, map)
   return parts
 end
 
-local SYMBOLS = FList { '#', '%', '&', '*', '+', '-', '/', '=', '@', '$' }
+local SYMBOLS = FList({ '#', '%', '&', '*', '+', '-', '/', '=', '@', '$' })
 
 function day.parse_input(input_data)
   local width, height = #input_data[1], #input_data

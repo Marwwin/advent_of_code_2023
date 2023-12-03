@@ -1,10 +1,11 @@
+local FList = require "utils.FList"
 local Set = {}
 local metatable
 
 metatable = {
   __call = function(self, list)
     list = list or {}
-    local set = {}
+    local set = FList({})
     for key, _ in pairs(list) do
       set[key] = true
     end

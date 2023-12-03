@@ -39,13 +39,12 @@ function Vec2D:to_string()
 end
 
 function Vec2D:neighbours(t)
-  local diagonals = t.diagonals or false
-  local neighbours = FList{ self:left(), self:right(), self:up(), self:down() }
-  if diagonals then
-    table.insert(neighbours,self:left_up())
-    table.insert(neighbours,self:right_up())
-    table.insert(neighbours,self:right_down())
-    table.insert(neighbours,self:left_down())
+  local neighbours = FList({ self:left(), self:right(), self:up(), self:down() })
+  if t.diagonals == true then
+    neighbours:add(self:left_up())
+    neighbours:add(self:right_up())
+    neighbours:add(self:right_down())
+    neighbours:add(self:left_down())
   end
   return neighbours
 end

@@ -1,8 +1,9 @@
+local FList = require "utils.FList"
 local Stack = {}
 
 local metatable = {
   __call = function(self)
-    local o = {}
+    local o = FList({})
     setmetatable(o, { __index = Stack })
     return o
   end,
