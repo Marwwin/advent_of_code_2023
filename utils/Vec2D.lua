@@ -40,7 +40,7 @@ end
 
 function Vec2D:neighbours(t)
   local neighbours = FList({ self:left(), self:right(), self:up(), self:down() })
-  if t.diagonals == true then
+  if t and t.diagonals == true then
     neighbours:add(self:left_up())
     neighbours:add(self:right_up())
     neighbours:add(self:right_down())

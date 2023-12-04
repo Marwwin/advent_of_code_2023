@@ -22,7 +22,6 @@ local DFS = {}
 DFS.find = function(start, goal, is_walkable, map, size)
   local q = Stack()
   local seen = {}
-  local visited = {}
   local start_node = Node(start)
 
   local current
@@ -32,17 +31,17 @@ DFS.find = function(start, goal, is_walkable, map, size)
 
   while (not q:empty()) do
     current = q:pop()
-    visited[current.node:to_string()] = current
     if current.node:equals(goal) then break end
 
     for _, neighbour in ipairs(current.node:neighbours()) do
-      if DFS.not_seen(neighbour, seen) and is_walkable(neighbour, map) and DFS.is_inside(neighbour, size) then
+      if DFS.not_visited(neighbour, seen) and is_walkable(neighbour, map) and DFS.is_inside(neighbour, size) then
         seen[neighbour:to_string()] = neighbour
         q:push(Node(neighbour, current))
       end
     end
 
-    DFS.print_map(map, visited, goal, size)
+
+    DFS.print_map(map, seen, goal, size)
   end
 
   local result = DFS.backtrack(current, start)
@@ -65,7 +64,7 @@ DFS.backtrack = function(current, result)
 end
 
 
-DFS.print_map = function(map, visited, goal, size)
+DFS.print_map = function(map, seen, goal, size)
   os.execute("sleep 0.04")
   os.execute("clear")
   for y = 0, size, 1 do
@@ -81,7 +80,7 @@ DFS.print_map = function(map, visited, goal, size)
         io.write(ASCII_COLORS.blue)
         io.write(" @ ")
         io.write(ASCII_COLORS.reset)
-      elseif visited[v] then
+      elseif seen[v] then
         io.write(ASCII_COLORS.red)
         io.write(" * ")
         io.write(ASCII_COLORS.reset)

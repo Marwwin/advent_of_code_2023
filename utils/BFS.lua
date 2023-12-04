@@ -1,6 +1,7 @@
 local Vec2D = require("utils.Vec2D")
 local Queue = require("utils.Queue")
 local Node = require("utils.Node")
+local u = require("utils.utils")
 
 local SYMBOL = {
   PATH = "path",
@@ -24,25 +25,28 @@ BFS.find = function(start, goal, is_walkable, map, size)
   local visited = {}
   local start_node = Node(start)
   local current
-
-  visited[start_node.node:to_string()] = start_node
+  print("gepp")
+  visited[start_node:get_value():to_string()] = start_node
   q:push(start_node)
 
   while (not q:empty()) do
     current = q:pop()
-    if current.node:equals(goal) then break end
+    print(current)
+    print(u.print_t(current))
+    local vec = current:get_value()
+    if vec:equals(goal) then break end
 
-    for _, neighbour in ipairs(current.node:neighbours()) do
+    for _, neighbour in ipairs(vec:neighbours()) do
       if BFS.not_visited(neighbour, visited) and is_walkable(neighbour, map) and BFS.is_inside(neighbour, size) then
         visited[neighbour:to_string()] = neighbour
         q:push(Node(neighbour, current))
       end
     end
-
     BFS.print_map(map, visited, goal, size)
   end
 
-  local result = BFS.backtrack(current, start)
+  print(u.print_t(current))
+  local result = BFS.backtrack(current, {})
   for _, path in ipairs(result) do
     map[path:to_string()] = SYMBOL.PATH
     BFS.print_map(map, visited, goal, size)
@@ -54,6 +58,8 @@ BFS.is_inside = function(node, size) return node.x >= 0 and node.x <= size and n
 BFS.not_visited = function(node, visited) return visited[node:to_string()] == nil end
 
 BFS.backtrack = function(current, result)
+  print("backtrack")
+  u.print_t(current)
   if current == nil then
     return result
   end
@@ -191,7 +197,7 @@ map["12 19"] = SYMBOL.WALL
 map["11 19"] = SYMBOL.WALL
 map["10 19"] = SYMBOL.WALL
 map["10 18"] = SYMBOL.WALL
-BFS.find(Vec2D(3, 3), Vec2D(11, 10), walkable, map, 20)
+BFS.find(Vec2D(3, 3), Vec2D(7, 5), walkable, map, 20)
 -- M.DFS(Vec2D(3, 3), Vec2D(12, 10), walkable, map)
 -- M.AStar(Vec2D(3, 3), Vec2D(17, 18), walkable, map)
 
