@@ -23,9 +23,7 @@ end
 function FList:filter(func)
   local result = {}
   for _, v in ipairs(self) do
-    if func(v) then
-      table.insert(result, v)
-    end
+    if func(v) then table.insert(result, v) end
   end
   return FList(result)
 end
