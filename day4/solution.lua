@@ -22,11 +22,11 @@ function d:part2(input_data)
 end
 
 function d.get_score(card)
-  local winning_nums = 0
+  local score = 0
   for _, number in ipairs(card.numbers) do
-    if card.winning:has(number) then winning_nums = winning_nums + 1 end
+    if card.winning:has(number) then score = score + 1 end
   end
-  return winning_nums
+  return score
 end
 
 function d.count_copies(id, cards, memo)
