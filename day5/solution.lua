@@ -31,6 +31,12 @@ function d.find_closest_seed(ranges, seeds, maps)
   return result
 end
 
+function d:part2(input_data)
+  local ranges, seeds, maps = d.parse_input(input_data)
+  return d.find_closest_seed2(ranges, seeds, maps)
+end
+
+
 function d.find_closest_seed2(ranges, seeds, maps)
   local result = 0x7FFFFFFFFFFFFFFF
   local fns = {}
@@ -63,13 +69,6 @@ function d.do_range(dest, source, range)
     if value >= source and value <= source + range then return value + offset end
     return value
   end
-end
-
-function d:part2(input_data)
-  print("part2")
-  local ranges, seeds, maps = d.parse_input(input_data)
-  print("created seeds")
-  return d.find_closest_seed2(ranges, seeds, maps)
 end
 
 function d.parse_input(input_data)
