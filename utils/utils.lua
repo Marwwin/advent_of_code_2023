@@ -28,6 +28,23 @@ function M.chars(str)
   return result
 end
 
+function M.gcd(a, b)
+  while b ~= 0 do
+    a, b = b, a % b
+  end
+  return a
+end
+
+function M.lcm(a, b) return (a * b) / M.gcd(a, b) end
+
+function M.lcm_of_list(list)
+  local result = list[1]
+  for i = 2, #list do
+    result = M.lcm(result, list[i])
+  end
+  return result
+end
+
 function M.print_t(t, depth)
   depth = depth or 0
   for key, value in pairs(t) do
@@ -42,7 +59,7 @@ function M.print_t(t, depth)
     if type(value) == "table" then
       io.write(offset .. key .. " {\n")
       M.print_t(value, depth + 1)
-      io.write(offset:sub(1,#offset -3) .. " }\n")
+      io.write(offset:sub(1, #offset - 3) .. " }\n")
     else
       io.write(offset .. key .. ": " .. value .. "\n")
     end

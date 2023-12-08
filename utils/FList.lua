@@ -72,7 +72,7 @@ function FList:set()
 end
 
 function FList:add(v)
-  table.insert(self,v)
+  table.insert(self, v)
 end
 
 function FList:ifor(fn)
@@ -99,6 +99,14 @@ function FList:take(n)
   local result = {}
   for i = 1, n do
     table.insert(result, table.remove(self, i - #result))
+  end
+  return result
+end
+
+function FList.to_ipairs(list)
+  local result = FList({})
+  for key, value in pairs(list) do
+    table.insert(result,  value )
   end
   return result
 end

@@ -1,0 +1,7 @@
+local Counter = require("utils.Counter")
+describe("Counter", function ()
+  it("should count string",function ()
+    local c = Counter("aaabbc")
+    assert.are.same({key="a",amount=3},  c:most_common()[1])
+  end)
+end)
