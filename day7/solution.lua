@@ -82,13 +82,13 @@ function d.get_higher_value_hand(a, b, t)
   for i = 1, #a, 1 do
     local la = a:sub(i, i)
     local lb = b:sub(i, i)
-    if to_label(la, t) < to_label(lb, t) then return true end
-    if to_label(la, t) > to_label(lb, t) then return false end
+    if d.to_label(la, t) < d.to_label(lb, t) then return true end
+    if d.to_label(la, t) > d.to_label(lb, t) then return false end
   end
   return nil, "error same hand"
 end
 
-local function to_label(str, t)
+function d.to_label(str, t)
   if str == "T" then return 10 end
   if str == "J" then
     if t.joker then return 1 else return 11 end

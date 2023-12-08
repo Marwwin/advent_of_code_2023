@@ -4,31 +4,43 @@ local Counter = {}
 
 local metatable = {
   __call = function(self, obj)
-    local c = {}
+    local counter = {}
     if type(obj) == "string" then
       for i = 1, #obj do
         local e = obj:sub(i, i)
-        if c[e] == nil then
-          c[e] = { key = e, amount = 1 }
+        if counter[e] == nil then
+          counter[e] = { key = e, amount = 1 }
         else
-          c[e].amount = c[e].amount + 1
+          counter[e].amount = counter[e].amount + 1
         end
       end
     end
-    local cc = {}
-    for key, value in pairs(c) do
-      table.insert(cc, value)
+    if type(obj) == "table" then
+      for key, value in pairs(obj) do
+        if counter[value] == nil then
+          counter[value] = { key = value, amount = 1 }
+        else
+          counter[value].amount = counter[value].amount + 1
+        end
+      end
     end
-    table.sort(cc, function(a, b) return a.amount > b.amount end)
-    local o = setmetatable(cc, { __index = self })
-    return o
+    local sortable = {}
+    for _, value in pairs(counter) do
+      table.insert(sortable, value)
+    end
+    table.sort(sortable, function(a, b) return a.amount > b.amount end)
+    return setmetatable(sortable, { __index = self })
   end
 }
 setmetatable(Counter, metatable)
 
 function Counter:most_common(n)
   n = n or 1
-  return FList(self):take(n)
+  local result = {}
+  for i = 1, n, 1 do
+    table.insert(result, self[i])
+  end
+  return result
 end
 
 function Counter.count_char(ch, str)
