@@ -28,6 +28,14 @@ function M.chars(str)
   return result
 end
 
+function M.sum(list)
+  local sum = 0
+  for key, value in pairs(list) do
+    sum = sum + value
+  end
+  return sum
+end
+
 function M.gcd(a, b)
   while b ~= 0 do
     a, b = b, a % b
