@@ -1,6 +1,5 @@
 local Vec2D = require("utils.Vec2D")
 local u = require("utils.utils")
-local Node = require("utils.Node")
 local Queue = require("utils.Queue")
 local D = {}
 
