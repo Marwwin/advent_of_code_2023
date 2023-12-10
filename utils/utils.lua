@@ -77,7 +77,7 @@ function M.print_t(t, depth)
       M.print_t(value, depth + 1)
       io.write(offset:sub(1, #offset - 3) .. " }\n")
     else
-      io.write(offset .. key .. ": " .. value .. "\n")
+      io.write(offset .. key .. ": " .. tostring(value) .. "\n")
     end
   end
 end

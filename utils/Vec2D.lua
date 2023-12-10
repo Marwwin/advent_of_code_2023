@@ -3,7 +3,7 @@ local FList = require("utils.FList")
 
 local metatable = {
   __call = function(self, x, y)
-    local o = { x = x, y = y }
+    local o = { x = tonumber(x), y = tonumber(y) }
     setmetatable(o, { __index = self })
     return o
   end,
