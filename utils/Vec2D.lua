@@ -20,7 +20,9 @@ function Vec2D:manhattan(vec, y)
 end
 
 function Vec2D:equals(v)
-  if not v then print("not") return false end
+  if not v then
+    return false
+  end
   if self.x == v.x and self.y == v.y then
     return true
   end
@@ -29,9 +31,9 @@ end
 
 function Vec2D:from_string(str)
   local x, y = str:match("(%d+) (%d+)")
-  if x == nil or y == nil then return nil, str.." invalid x or y was nil" end
+  if x == nil or y == nil then return nil, str .. " invalid x or y was nil" end
 
-  return Vec2D(x,y)
+  return Vec2D(x, y)
 end
 
 function Vec2D:to_string()
@@ -55,7 +57,11 @@ function Vec2D:right() return Vec2D(self.x + 1, self.y) end
 
 function Vec2D:up() return Vec2D(self.x, self.y + 1) end
 
+function Vec2D:invert_up() return Vec2D(self.x, self.y - 1) end
+
 function Vec2D:down() return Vec2D(self.x, self.y - 1) end
+
+function Vec2D:invert_down() return Vec2D(self.x, self.y + 1) end
 
 function Vec2D:left_up() return Vec2D(self.x - 1, self.y + 1) end
 

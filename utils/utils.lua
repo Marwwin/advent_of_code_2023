@@ -36,6 +36,14 @@ function M.sum(list)
   return sum
 end
 
+function M.size(list)
+  local size = 0
+  for ket, value in pairs(list) do
+    size = size + 1
+  end
+  return size
+end
+
 function M.gcd(a, b)
   while b ~= 0 do
     a, b = b, a % b

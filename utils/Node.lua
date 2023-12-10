@@ -23,7 +23,7 @@ end
 function Node:set_right(node) self.right = node end
 
 function Node:get_right()
-  if self.right == nil then return nil, (self.value .. " right child not set") end
+  if self.right == nil then return nil end
   return self.right
 end
 
