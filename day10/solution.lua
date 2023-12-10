@@ -4,13 +4,13 @@ local Queue = require("utils.Queue")
 local D = {}
 
 local PIPES = {
-  ["|"] = function(v) return { v:invert_up(), v:invert_down() } end,
-  ["-"] = function(v) return { v:left(), v:right() } end,
-  ["L"] = function(v) return { v:invert_up(), v:right() } end,
-  ["J"] = function(v) return { v:left(), v:invert_up() } end,
-  ["7"] = function(v) return { v:left(), v:invert_down() } end,
-  ["F"] = function(v) return { v:right(), v:invert_down() } end,
-  ["."] = function(v) return {} end,
+  ["|"] = function(vec) return { vec:invert_up(), vec:invert_down() } end,
+  ["-"] = function(vec) return { vec:left(), vec:right() } end,
+  ["L"] = function(vec) return { vec:invert_up(), vec:right() } end,
+  ["J"] = function(vec) return { vec:left(), vec:invert_up() } end,
+  ["7"] = function(vec) return { vec:left(), vec:invert_down() } end,
+  ["F"] = function(vec) return { vec:right(), vec:invert_down() } end,
+  ["."] = function(vec) return {} end,
 }
 
 
@@ -29,12 +29,12 @@ function D.walk_loop(map, q, seen)
   seen = seen or {}
 
   if q:top() == nil then return seen end
-  local v = q:pop()
-  seen[v:to_string()] = true
+  local vec = q:pop()
+  seen[vec:to_string()] = true
 
-  local symbol = D.at(v.x, v.y, map)
-  if symbol == "S" then symbol = D.get_start_pipe_symbol(v, map) end
-  local nexts = PIPES[symbol](v)
+  local symbol = D.at(vec.x, vec.y, map)
+  if symbol == "S" then symbol = D.get_start_pipe_symbol(vec, map) end
+  local nexts = PIPES[symbol](vec)
 
   for _, value in ipairs(nexts) do
     if seen[value:to_string()] == nil then
@@ -53,13 +53,13 @@ function D.find_start_point(map)
   end
 end
 
-function D.get_start_pipe_symbol(v, map)
+function D.get_start_pipe_symbol(vec, map)
   local result = ""
 
-  local north = D.at(v.x, v.y - 1, map)
-  local south = D.at(v.x, v.y + 1, map)
-  local east = D.at(v.x + 1, v.y, map)
-  local west = D.at(v.x - 1, v.y, map)
+  local north = D.at(vec.x, vec.y - 1, map)
+  local south = D.at(vec.x, vec.y + 1, map)
+  local east = D.at(vec.x + 1, vec.y, map)
+  local west = D.at(vec.x - 1, vec.y, map)
 
   if north == "|" or north == "7" or north == "F" then result = result .. "NORTH_" end
   if south == "|" or south == "J" or south == "L" then result = result .. "SOUTH_" end
