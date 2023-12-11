@@ -44,6 +44,21 @@ function M.size(list)
   return size
 end
 
+function M.range(start, stop)
+  if stop == nil then
+    local result = {}
+    for i = 1, start, 1 do
+      table.insert(result, i)
+    end
+    return result
+  end
+  local result = {}
+  for i = start, stop, 1 do
+    table.insert(result, i)
+  end
+  return result
+end
+
 function M.gcd(a, b)
   while b ~= 0 do
     a, b = b, a % b
@@ -59,6 +74,15 @@ function M.lcm_of_list(list)
     result = M.lcm(result, list[i])
   end
   return result
+end
+
+function M.print_matrix(matrix)
+  for y = 1, #matrix, 1 do
+    for x = 1, #matrix[1], 1 do
+      io.write(matrix[y]:sub(x, x))
+    end
+    io.write("\n")
+  end
 end
 
 function M.print_t(t, depth)

@@ -45,11 +45,11 @@ BFS.find = function(start, goal, is_walkable, map, size)
     BFS.print_map(map, visited, goal, size)
   end
 
-  print(u.print_t(current))
+  u.print_t(current)
   local result = BFS.backtrack(current, {})
   for _, path in ipairs(result) do
     map[path:to_string()] = SYMBOL.PATH
-    BFS.print_map(map, visited, goal, size)
+--     BFS.print_map(map, visited, goal, size)
   end
 end
 
