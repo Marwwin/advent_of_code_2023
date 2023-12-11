@@ -1,16 +1,13 @@
-local AOC = require("AOC")
 local u = require("utils.utils")
 local Vec2D = require("utils.Vec2D")
-local Queue = require("utils.Queue")
-local Node = require("utils.Node")
 local day = {}
 
 function day.solve(matrix)
+  -- Find all galaxies and empty rows/columns
   local galaxies = {}
   local empty_rows = u.range(#matrix)
   local empty_cols = u.range(#matrix[1])
 
-  -- find all galaxies and empty rows/columns
   for y = 1, #matrix, 1 do
     for x = 1, #matrix[1], 1 do
       if matrix[y]:sub(x, x) == "#" then
