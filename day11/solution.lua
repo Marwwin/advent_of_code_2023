@@ -5,8 +5,9 @@ local day = {}
 function day.solve(matrix)
   -- Find all galaxies and empty rows/columns
   local galaxies = {}
-  local empty_rows = u.range(#matrix)
-  local empty_cols = u.range(#matrix[1])
+  
+  local empty_rows = u.range(#matrix[1])
+  local empty_cols = u.range(#matrix)
 
   for y = 1, #matrix, 1 do
     for x = 1, #matrix[1], 1 do
@@ -18,8 +19,8 @@ function day.solve(matrix)
     end
   end
 
+  -- Count the sum of all distances 
   local expansion_rate = 1000000
-
   local part1 = 0
   local part2 = 0
   for i = 1, #galaxies, 1 do
