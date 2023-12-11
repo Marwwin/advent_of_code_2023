@@ -5,14 +5,14 @@ local day = {}
 function day.solve(matrix)
   -- Find all galaxies and empty rows/columns
   local galaxies = {}
-  local empty_rows = u.range(#matrix[1])
   local empty_cols = u.range(#matrix)
+  local empty_rows = u.range(#matrix[1])
 
   for y = 1, #matrix, 1 do
     for x = 1, #matrix[1], 1 do
       if matrix[y]:sub(x, x) == "#" then
-        empty_rows[x] = nil
-        empty_cols[y] = nil
+        empty_cols[x] = nil
+        empty_rows[y] = nil
         table.insert(galaxies, Vec2D(x, y))
       end
     end
@@ -33,7 +33,7 @@ function day.solve(matrix)
 
       -- Count missing rows
       for y = math.min(current.y, galaxy.y), math.max(current.y, galaxy.y), 1 do
-        if empty_cols[y] ~= nil then
+        if empty_rows[y] ~= nil then
           p1 = p1 + 1
           p2 = p2 + expansion_rate - 1
         end
@@ -41,7 +41,7 @@ function day.solve(matrix)
 
       -- Count missing cols
       for x = math.min(current.x, galaxy.x), math.max(current.x, galaxy.x), 1 do
-        if empty_rows[x] ~= nil then
+        if empty_cols[x] ~= nil then
           p1 = p1 + 1
           p2 = p2 + expansion_rate - 1
         end
@@ -53,6 +53,8 @@ function day.solve(matrix)
   end
   return part1, part2
 end
+
+
 
 function day:part1(input_data)
   local part1 = day.solve(input_data)
