@@ -18,10 +18,10 @@ function day.solve(matrix)
     end
   end
 
-  -- Count the sum of all distances 
+  -- Count the sum of all distances
   local part1 = 0
   local part2 = 0
-  local expansion_rate = 1000000 -- for part2
+  local expansion_rate = 1000000 - 1 -- for part2
   for i = 1, #galaxies, 1 do
     local current = galaxies[i]
     for j = i + 1, #galaxies, 1 do
@@ -31,11 +31,12 @@ function day.solve(matrix)
       local p1 = dist
       local p2 = dist
 
+
       -- Count missing rows
       for y = math.min(current.y, galaxy.y), math.max(current.y, galaxy.y), 1 do
         if empty_rows[y] ~= nil then
           p1 = p1 + 1
-          p2 = p2 + expansion_rate - 1
+          p2 = p2 + expansion_rate
         end
       end
 
@@ -43,7 +44,7 @@ function day.solve(matrix)
       for x = math.min(current.x, galaxy.x), math.max(current.x, galaxy.x), 1 do
         if empty_cols[x] ~= nil then
           p1 = p1 + 1
-          p2 = p2 + expansion_rate - 1
+          p2 = p2 + expansion_rate
         end
       end
 
@@ -54,15 +55,16 @@ function day.solve(matrix)
   return part1, part2
 end
 
-
+-- day.
+local part2
 
 function day:part1(input_data)
-  local part1 = day.solve(input_data)
+  local part1, p2 = day.solve(input_data)
+  part2 = p2
   return part1
 end
 
 function day:part2(input_data)
-  local _, part2 = day.solve(input_data)
   return part2
 end
 

@@ -16,6 +16,14 @@ function M.split(str, separator)
   return result
 end
 
+function M.split_at(str,i)
+  local s = ""
+  local rest = ""
+  s = str:sub(1,i)
+  rest = str:sub(i+1,#str)
+  return s, rest
+end
+
 -- @param {string} str
 -- @return {FList}
 --
