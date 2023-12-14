@@ -45,6 +45,8 @@ function day:part2(input_data)
     --     print("i", index, ver, hor)
     --     result = result + hor + (100 * ver)
     for y, row in ipairs(m) do
+      print(index)
+      print(day.find_diff())
       for x, value in ipairs(row) do
         print(m[y][x])
       end

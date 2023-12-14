@@ -51,6 +51,15 @@ function Vec2D:neighbours(t)
   return neighbours
 end
 
+function Vec2D:move(dir)
+  if dir == "up" then return self:up() end
+  if dir == "i_up" or dir == "north" then return self:invert_up() end
+  if dir == "down" then return self:down() end
+  if dir == "i_down" or dir == "south" then return self:invert_down() end
+  if dir == "left" or dir == "west" then return self:left() end
+  if dir == "right" or dir == "east" then return self:right() end
+end
+
 function Vec2D:left() return Vec2D(self.x - 1, self.y) end
 
 function Vec2D:right() return Vec2D(self.x + 1, self.y) end
