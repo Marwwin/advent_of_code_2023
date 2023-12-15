@@ -88,6 +88,13 @@ function FList:has(val)
   return false
 end
 
+function FList:has_fn(fn)
+  for key, value in pairs(self) do
+    if fn(value) then return true end
+  end
+  return false
+end
+
 function FList:index(val)
   for i, value in ipairs(self) do
     if value == val then return i end
