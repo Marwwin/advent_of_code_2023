@@ -39,19 +39,12 @@ function day:part2(input_data)
 
   local result = 0
   for index, m in ipairs(matrixes) do
-    --     local hor = day.find_middle_hor(m, 1)
-    --     local ver = day.find_middle_ver(m, 1)
-    --
-    --     print("i", index, ver, hor)
-    --     result = result + hor + (100 * ver)
-    for y, row in ipairs(m) do
-      print(index)
-      print(day.find_diff())
-      for x, value in ipairs(row) do
-        print(m[y][x])
-      end
-    end
+--     u.print_t(m)
+    local h = day.find_middle_hor(m, 1)
+    local v = day.find_middle_ver(m,1)
+    print(h,v)
   end
+  --   result = result + hor + (100 * ver)
   return result
 end
 
@@ -70,10 +63,14 @@ function day.find_middle_hor(matrix, diff)
     offset = 0
     local d = diff or 0
     repeat
-      if x - offset == 0 then return offset end
-      if x + 1 + offset > size then return size - offset end
-      local low = day.get_col(matrix, x - offset)
-      local hi = day.get_col(matrix, x + 1 + offset)
+      local low_index = x - offset
+      local hi_index = x + 1 + offset
+      if low_index == 0 then return offset end
+      if hi_index > size then return size - offset end
+      local low = day.get_col(matrix, low_index)
+      local hi = day.get_col(matrix, hi_index)
+      print(low, hi, day.find_diff(low,hi))
+
       d = d - day.find_diff(low, hi)
       offset = offset + 1
     until d < 0
@@ -81,37 +78,35 @@ function day.find_middle_hor(matrix, diff)
   return 0
 end
 
-function day.find_middle_ver(matrix, diff)
+function day.find_middle_ver(matrix, start)
   local offset = 0
   for y = 1, #matrix - 1, 1 do
-    local d = diff or 0
+    local diff = start or 0
     offset = 0
     repeat
-      if y - offset == 0 then
-        return offset
-      end
-      if y + 1 + offset > #matrix then
-        return #matrix - offset
-      end
-      local low = table.concat(matrix[y - offset])
-      local hi = table.concat(matrix[y + 1 + offset])
+      local low_index = y - offset
+      local hi_index = y + 1 + offset
+      if low_index == 0 then return offset end
+      if y + 1 + offset > #matrix then return #matrix - offset end
+      local low = table.concat(matrix[low_index])
+      local hi = table.concat(matrix[hi_index])
+
+      print(low, hi, day.find_diff(low,hi))
 
       offset = offset + 1
-      local dd = day.find_diff(low, hi)
-      d = d - dd
-      if dd == diff then return y end
-    until d < 0
+      local row_diff = day.find_diff(low, hi)
+      diff = diff - row_diff
+      if diff < 0 then return y end
+    until diff < 0
   end
   return 0
 end
 
 function day.find_diff(low, hi)
+  print(low, hi)
   local n_diff = 0
   for i = 1, #low, 1 do
-    local l = low:sub(i, i)
-    local h = hi:sub(i, i)
-
-    if l ~= h then
+    if low:sub(i, i) ~= hi:sub(i, i) then
       n_diff = n_diff + 1
     end
   end

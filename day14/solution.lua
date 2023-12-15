@@ -1,7 +1,6 @@
 local Vec2D = require("utils.Vec2D")
 local u = require("utils.utils")
-local AOC = require("AOC")
-local Matrix = require("utils.matrix")
+local Matrix = require("utils.Matrix")
 local day = {}
 
 
@@ -35,17 +34,17 @@ function day:part1(input_data)
     result = result + load
   end
 
-  for y = 1, #input_data, 1 do
-    for x = 1, #input_data[1], 1 do
-      local char = Vec2D(x, y):to_string()
-      if board[char] then
-        io.write(board[char])
-      else
-        io.write(".")
-      end
-    end
-    io.write("\n")
-  end
+  --   for y = 1, #input_data, 1 do
+  --     for x = 1, #input_data[1], 1 do
+  --       local char = Vec2D(x, y):to_string()
+  --       if board[char] then
+  --         io.write(board[char])
+  --       else
+  --         io.write(".")
+  --       end
+  --     end
+  --     io.write("\n")
+  --   end
 
   return result
 end
@@ -56,15 +55,26 @@ function day:part2(input_data)
     for x = 1, #row, 1 do
       local char = row:sub(x, x)
       if char ~= "." then
-        print("insert", char)
         board:insert(char, x, y)
       end
     end
   end
 
-  board = day.cycle(board)
+  for i = 1, 1000, 1 do
+    board = day.cycle(board)
+    print("i",i,"value",day.count_part2(board))
+  end
 
-  board:print()
+  return day.count_part2(board)
+end
+
+function day.count_part2(board)
+  local result = 0
+  for y = 1, board.size, 1 do
+    for x = 1, board.size, 1 do
+      if board[y][x] == "O" then result = result + board.size - y + 1 end
+    end
+  end
   return result
 end
 
@@ -82,16 +92,83 @@ function day.roll_rock(rock, board, width, height, dir)
 end
 
 function day.cycle(board)
-  local predicate = function(v) return v == "O" end
-  board:scan_up_down(predicate, board.up)
-  board:print()
-  board:scan_up_down(predicate, board.left)
-  board:print()
-  board:scan_down_up(predicate, board.down)
-  board:print()
-  board:scan_right_left(predicate, board.right)
-  board:print()
+  board = day.tilt_north(board)
+  board = day.tilt_west(board)
+  board = day.tilt_south(board)
+  board = day.tilt_east(board)
   return board
+end
+
+function day.tilt_north(board)
+  for y = 1, board.size, 1 do
+    for x = 1, board.size, 1 do
+      if board[y][x] == "O" then
+        day.move_north(board, x, y)
+      end
+    end
+  end
+  return board
+end
+
+function day.move_north(board, x, y)
+  if y == 1 then return end
+  while y ~= 1 and (board[y - 1][x] ~= "#" and board[y - 1][x] ~= "O") do
+    x, y = board:up(x, y)
+  end
+end
+
+function day.tilt_west(board)
+  for y = 1, board.size, 1 do
+    for x = 1, board.size, 1 do
+      if board[y][x] == "O" then
+        day.move_west(board, x, y)
+      end
+    end
+  end
+  return board
+end
+
+function day.move_west(board, x, y)
+  if x == 1 then return end
+  while x ~= 1 and (board[y][x - 1] ~= "#" and board[y][x - 1] ~= "O") do
+    x, y = board:left(x, y)
+  end
+end
+
+function day.tilt_south(board)
+  for y = board.size, 1, -1 do
+    for x = 1, board.size, 1 do
+      if board[y][x] == "O" then
+        day.move_south(board, x, y)
+      end
+    end
+  end
+  return board
+end
+
+function day.move_south(board, x, y)
+  if y == board.size then return end
+  while y ~= board.size and (board[y + 1][x] ~= "#" and board[y + 1][x] ~= "O") do
+    x, y = board:down(x, y)
+  end
+end
+
+function day.tilt_east(board)
+  for y = 1, board.size, 1 do
+    for x = board.size, 1, -1 do
+      if board[y][x] == "O" then
+        day.move_east(board, x, y)
+      end
+    end
+  end
+  return board
+end
+
+function day.move_east(board, x, y)
+  if x == board.size then return end
+  while x ~= board.size and (board[y][x + 1] ~= "#" and board[y][x + 1] ~= "O") do
+    x, y = board:right(x, y)
+  end
 end
 
 return day

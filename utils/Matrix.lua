@@ -1,7 +1,7 @@
 local M = {}
 
 local metatable = {
-  __call = function(self,size)
+  __call = function(self, size)
     local matrix = {}
     for _ = 1, size do
       local row = {}
@@ -17,7 +17,7 @@ local metatable = {
 }
 setmetatable(M, metatable)
 
-function M:insert(value,x,y)
+function M:insert(value, x, y)
   self[y][x] = value
 end
 
@@ -36,30 +36,6 @@ function M:print()
   end
 end
 
-function M:scan_up_down(predicate, fn)
-  for y = 1, self.size, 1 do
-    for x = 1, self.size, 1 do
-      print(self[y][x],predicate(self[y][x]))
-      if predicate(self[y][x]) then print("moving") fn(self,x, y) end
-    end
-  end
-end
-
-function M:scan_down_up(predicate, fn)
-  for y = self.size, 1, -1 do
-    for x = 1, self.size, 1 do
-      if predicate(self[y][x]) then fn(self,x, y) end
-    end
-  end
-end
-
-function M:scan_right_left(predicate, fn)
-  for y = 1, self.size, 1 do
-    for x = self.size, 1, -1 do
-      if predicate(self[y][x]) then fn(self,x, y) end
-    end
-  end
-end
 
 function M:move(x, y, direction)
   if direction == "up" or direction == "north" then self:up(x, y) end
@@ -69,23 +45,42 @@ function M:move(x, y, direction)
 end
 
 function M:up(x, y)
+  if y == 1 then return x, y end
   self[y - 1][x] = self[y][x]
   self[y][x] = nil
+  return x, y - 1
 end
 
 function M:down(x, y)
+  if y >= self.size then return x, y end
   self[y + 1][x] = self[y][x]
   self[y][x] = nil
+  return x, y + 1
 end
 
 function M:left(x, y)
+  if x == 1 then return x, y end
   self[y][x - 1] = self[y][x]
   self[y][x] = nil
+  return x - 1, y
 end
 
-function M:rigth(x, y)
+function M:right(x, y)
+  if x >= self.size then return x, y end
   self[y][x + 1] = self[y][x]
   self[y][x] = nil
+  return x + 1, y
+end
+
+function M:ninety(m)
+  local result = {}
+  for x = 1, #m[1], 1 do
+    result[x] = {}
+   for y = 1, #m, 1 do
+      table.insert(result[x],m[y][x] ) 
+   end 
+  end
+  return result
 end
 
 return M
